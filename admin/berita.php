@@ -40,7 +40,7 @@
                         <tbody>
                             <?php
                             try {
-                                $stmt = $db->prepare("SELECT user.*, kategori.*, berita.* 
+                                $stmt = $pdo->prepare("SELECT user.*, kategori.*, berita.* 
                                     FROM berita 
                                     INNER JOIN user ON user.id = berita.user_id 
                                     INNER JOIN kategori ON kategori.id = berita.kategori_id");
@@ -91,7 +91,7 @@
                                 <option value="">Pilih Kategori</option>
                                 <?php
                                 try {
-                                    $stmt = $db->prepare("SELECT * FROM kategori");
+                                    $stmt = $pdo->prepare("SELECT * FROM kategori");
                                     $stmt->execute();
                                     while ($data_kategori = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         echo "<option value=\"{$data_kategori['id']}\">{$data_kategori['nama_kategori']}</option>";
@@ -131,7 +131,7 @@
 
         case 'edit':
             try {
-                $stmt = $db->prepare("SELECT * FROM berita WHERE id = :id");
+                $stmt = $pdo->prepare("SELECT * FROM berita WHERE id = :id");
                 $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
                 $stmt->execute();
                 $data_berita = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -155,7 +155,7 @@
                                 <option value="">Pilih Kategori</option>
                                 <?php
                                 try {
-                                    $stmt = $db->prepare("SELECT * FROM kategori");
+                                    $stmt = $pdo->prepare("SELECT * FROM kategori");
                                     $stmt->execute();
                                     while ($data_kategori = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         $selected = ($data_berita['kategori_id'] == $data_kategori['id']) ? 'selected' : '';
