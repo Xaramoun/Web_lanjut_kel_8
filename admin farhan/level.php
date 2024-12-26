@@ -52,7 +52,7 @@
                     <!-- Mulai bagian <tbody> -->
                     <tbody>
                         <?php
-                            $stmt = $db->query("SELECT * FROM level");
+                            $stmt = $pdo->query("SELECT * FROM level");
                              $no = 1;
                             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         ?>
@@ -118,7 +118,7 @@
 break;
 case 'edit';
 include 'koneksi.php';
-$stmt = $db->prepare("SELECT * FROM level WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM level WHERE id = ?");
 $stmt->execute([$_GET['id']]);
 $data_level = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
