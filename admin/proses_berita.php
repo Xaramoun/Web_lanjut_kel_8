@@ -63,7 +63,7 @@ if (isset($_GET['proses'])) {
                     exit;
                 }
 
-                $stmt = $db->prepare("INSERT INTO berita (user_id, kategori_id, judul, file_upload, isi_berita, created_at) 
+                $stmt = $pdo->prepare("INSERT INTO berita (user_id, kategori_id, judul, file_upload, isi_berita, created_at) 
                                       VALUES (:user_id, :kategori_id, :judul, :file_upload, :isi_berita, NOW())");
                 $stmt->bindParam(':user_id', $user_id);
                 $stmt->bindParam(':kategori_id', $_POST['kategori_id']);
@@ -79,7 +79,7 @@ if (isset($_GET['proses'])) {
             }
 
             if ($proses == 'edit') {
-                $stmt = $db->prepare("UPDATE berita SET
+                $stmt = $pdo->prepare("UPDATE berita SET
                                       user_id      = :user_id,
                                       kategori_id  = :kategori_id,
                                       judul        = :judul,
@@ -108,7 +108,7 @@ if (isset($_GET['proses'])) {
 
     if ($proses == 'delete') {
         try {
-            $stmt = $db->prepare("DELETE FROM berita WHERE id = :id");
+            $stmt = $pdo->prepare("DELETE FROM berita WHERE id = :id");
             $stmt->bindParam(':id', $_GET['id']);
             if ($stmt->execute()) {
                 unlink('upload/' . $_GET['file']);
