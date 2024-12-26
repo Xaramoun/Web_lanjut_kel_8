@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Adillah Corporation | Dashboard</title>
+    <title>Project Kelompok 8 Corporation | Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -88,7 +88,7 @@
                         <img src="../dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">M.Adillah Putra</a>
+                        <a href="#" class="d-block">Kelompok 8</a>
                     </div>
                 </div>
 
