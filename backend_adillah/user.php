@@ -31,7 +31,7 @@ switch ($aksi) {
                         </thead>
                         <tbody>
                             <?php
-                            $stmt = $db->query("SELECT * FROM level INNER JOIN user ON level.id = user.level_id");
+                            $stmt = $pdo->query("SELECT * FROM level INNER JOIN user ON level.id = user.level_id");
                             $no = 1;
                             while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             ?>
@@ -85,7 +85,7 @@ break;
                     <select name="level_id" class="form-select" id="level_id" required>
                         <option value="">-Pilih level-</option>
                         <?php
-                        $stmt_level = $db->query("SELECT * FROM level");
+                        $stmt_level = $pdo->query("SELECT * FROM level");
                         while ($data_level = $stmt_level->fetch(PDO::FETCH_ASSOC)) {
                             echo "<option value='{$data_level['id']}'>{$data_level['nama_level']}</option>";
                         }
@@ -143,7 +143,7 @@ break;
 case 'edit':
     
     include 'koneksi.php';
-    $stmt = $db->prepare("SELECT * FROM user WHERE id = :id");
+    $stmt = $pdo->prepare("SELECT * FROM user WHERE id = :id");
     $stmt->execute([':id' => $_GET['id']]);
     $data_user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -174,7 +174,7 @@ case 'edit':
                     <select name="level_id" class="form-select" id="level_id" required>
                         <option value="">-Pilih level-</option>
                         <?php
-                        $stmt_level = $db->query("SELECT * FROM level");
+                        $stmt_level = $pdo->query("SELECT * FROM level");
                         while ($data_level = $stmt_level->fetch(PDO::FETCH_ASSOC)) {
                             $selected = ($data_level['id'] == $data_user['level_id']) ? 'selected' : '';
                             echo "<option value='{$data_level['id']}' $selected>{$data_level['nama_level']}</option>";
