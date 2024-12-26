@@ -45,7 +45,7 @@ switch($aksi) {
                 <tbody>
 
                 <?php
-                    $stmt = $dbh->query("SELECT * FROM prodi INNER JOIN dosen WHERE prodi.id=dosen.prodi_id");
+                    $stmt = $pdo->query("SELECT * FROM prodi INNER JOIN dosen WHERE prodi.id=dosen.prodi_id");
                     $no = 1;
                     while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 ?>
@@ -106,7 +106,7 @@ switch($aksi) {
             <select name="prodi_id" class="form-select" id="prodi_id" name="prodi_id" required>
                 <option value="">-Pilih Prodi-</option>
                 <?php
-                $stmt = $dbh->query("SELECT * FROM prodi");
+                $stmt = $pdo->query("SELECT * FROM prodi");
                 while ($data_prodi = $stmt->fetch(PDO::FETCH_ASSOC)){
                     echo "<option value='".$data_prodi['id']."'>".$data_prodi['nama_prodi']."</option>";
                 }
@@ -136,7 +136,7 @@ switch($aksi) {
 
     case 'edit':
         try {
-            $stmt = $dbh->prepare("SELECT * FROM dosen WHERE id = :id");
+            $stmt = $pdo->prepare("SELECT * FROM dosen WHERE id = :id");
             $stmt->execute(['id' => $_GET['id']]);
             $data_dosen = $stmt->fetch(PDO::FETCH_ASSOC);
             
@@ -171,7 +171,7 @@ switch($aksi) {
                 <select class="form-select" id="prodi_id" name="prodi_id" required>
                     <option value="">-Pilih Prodi-</option>
                     <?php
-                    $stmt_prodi = $dbh->query("SELECT * FROM prodi");
+                    $stmt_prodi = $pdo->query("SELECT * FROM prodi");
                     while ($data_prodi = $stmt_prodi->fetch(PDO::FETCH_ASSOC)) {
                         $selected = ($data_prodi['id'] == $data_dosen['prodi_id']) ? 'selected' : '';
                         echo "<option value='".$data_prodi['id']."' $selected>".$data_prodi['nama_prodi']."</option>";
