@@ -3,7 +3,7 @@ require_once 'koneksi.php';
 
 if ($_GET['proses'] == 'insert') {
     try {
-        $stmt = $db->prepare("INSERT INTO matakuliah (kode_matkul, nama_matkul, semester, jenis_matkul, sks, jam, keterangan) 
+        $stmt = $pdo->prepare("INSERT INTO matakuliah (kode_matkul, nama_matkul, semester, jenis_matkul, sks, jam, keterangan) 
                              VALUES (:kode_matkul, :nama_matkul, :semester, :jenis_matkul, :sks, :jam, :keterangan)");
         
         $stmt->execute([
@@ -25,7 +25,7 @@ if ($_GET['proses'] == 'insert') {
 
 if ($_GET['proses'] == 'edit') {
     try {
-        $stmt = $db->prepare("UPDATE matakuliah SET 
+        $stmt = $pdo->prepare("UPDATE matakuliah SET 
                              kode_matkul = :kode_matkul,
                              nama_matkul = :nama_matkul,
                              semester = :semester,
@@ -55,7 +55,7 @@ if ($_GET['proses'] == 'edit') {
 
 if ($_GET['proses'] == 'delete') {
     try {
-        $stmt = $db->prepare("DELETE FROM matakuliah WHERE id = :id");
+        $stmt = $pdo->prepare("DELETE FROM matakuliah WHERE id = :id");
         $stmt->execute([':id' => $_GET['id']]);
         
         header('Location: index.php?p=matakuliah');
