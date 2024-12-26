@@ -364,7 +364,7 @@
                             <!-- Default box -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Nacth Data</h3>
+                                    <h3 class="card-title">Kelompok 8 Data</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"
