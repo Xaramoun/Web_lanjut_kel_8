@@ -4,10 +4,10 @@ include 'koneksi.php'; // Menghubungkan ke database
 if ($_GET['proses'] == 'insert') {
     if (isset($_POST['submit'])) {
         try {
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Query untuk menyisipkan data
-            $stmt = $dbh->prepare("INSERT INTO kategori (nama_kategori, keterangan) VALUES (:nama_kategori, :keterangan)");
+            $stmt = $pdo->prepare("INSERT INTO kategori (nama_kategori, keterangan) VALUES (:nama_kategori, :keterangan)");
             $stmt->bindParam(':nama_kategori', $_POST['nama_kategori'], PDO::PARAM_STR);
             $stmt->bindParam(':keterangan', $_POST['keterangan'], PDO::PARAM_STR);
 
@@ -23,10 +23,10 @@ if ($_GET['proses'] == 'insert') {
 if ($_GET['proses'] == 'edit') {
     if (isset($_POST['submit'])) {
         try {
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Query untuk memperbarui data
-            $stmt = $dbh->prepare("UPDATE kategori 
+            $stmt = $pdo->prepare("UPDATE kategori 
                                    SET nama_kategori = :nama_kategori, 
                                        keterangan = :keterangan 
                                    WHERE id = :id");
@@ -45,10 +45,10 @@ if ($_GET['proses'] == 'edit') {
 
 if ($_GET['proses'] == 'delete') {
     try {
-        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Query untuk menghapus data
-        $stmt = $dbh->prepare("DELETE FROM kategori WHERE id = :id");
+        $stmt = $pdo->prepare("DELETE FROM kategori WHERE id = :id");
         $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
 
         if ($stmt->execute()) {
