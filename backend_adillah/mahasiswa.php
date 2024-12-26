@@ -25,7 +25,7 @@ switch ($aksi) {
                     </tr>
                     <?php
                     include 'koneksi.php';
-                    $stmt = $db->query("SELECT mahasiswa.*, prodi.nama_prodi FROM mahasiswa INNER JOIN prodi ON mahasiswa.prodi_id = prodi.id");
+                    $stmt = $pdo->query("SELECT mahasiswa.*, prodi.nama_prodi FROM mahasiswa INNER JOIN prodi ON mahasiswa.prodi_id = prodi.id");
                     $no = 1;
                     while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         ?>
