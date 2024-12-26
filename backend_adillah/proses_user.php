@@ -22,7 +22,7 @@ if ($proses == 'insert') {
 
     // Simpan data ke database
     $query = "INSERT INTO user (email, password, level_id, nama_lengkap, notelp, alamat, photo) VALUES (:email, :password, :level_id, :nama_lengkap, :notelp, :alamat, :photo)";
-    $stmt = $db->prepare($query);
+    $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':level_id', $level_id);
@@ -63,7 +63,7 @@ if ($proses == 'insert') {
         $query = "UPDATE user SET email = :email, password = :password, level_id = :level_id, nama_lengkap = :nama_lengkap, notelp = :notelp, alamat = :alamat WHERE id = :id";
     }
 
-    $stmt = $db->prepare($query);
+    $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':level_id', $level_id);
@@ -92,7 +92,7 @@ if ($proses == 'insert') {
 
     // Hapus data dari database
     $query = "DELETE FROM user WHERE id = :id";
-    $stmt = $db->prepare($query);
+    $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
 
     if ($stmt->execute()) {
