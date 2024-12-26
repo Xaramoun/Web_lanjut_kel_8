@@ -38,7 +38,7 @@ switch ($aksi) {
                                 <?php
                                 try {
                                     $query = "SELECT * FROM matakuliah";
-                                    $stmt = $db->prepare($query);
+                                    $stmt = $pdo->prepare($query);
                                     $stmt->execute();
                                     while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
@@ -167,7 +167,7 @@ switch ($aksi) {
         $id = $_GET['id'];
         try {
             $query = "SELECT * FROM matakuliah WHERE id = :id";
-            $stmt = $db->prepare($query);
+            $stmt = $pdo->prepare($query);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $data_matakuliah = $stmt->fetch(PDO::FETCH_ASSOC);
