@@ -1,271 +1,170 @@
 <?php
-require_once 'koneksi.php';
+include 'koneksi.php'; // Pastikan file koneksi.php sudah benar dengan $pdo terdefinisi
+
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : 'list';
+
 switch ($aksi) {
     case 'list':
         ?>
-        <!-- Content Header -->
-
-        <!-- Main content -->
-        <section class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                        <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-list"></i> Matakuliah</h3>
-                        </div>
-                
-                  </div>
-                </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <tr>
-                                    <th><i class="fas fa-key"></i> ID</th>
-                                    <th><i class="fas fa-barcode"></i> Kode Matakuliah</th>
-                                    <th><i class="fas fa-book"></i> Nama Matakuliah</th>
-                                    <th><i class="fas fa-calendar-alt"></i> Semester</th>
-                                    <th><i class="fas fa-tags"></i> Jenis Matakuliah</th>
-                                    <th><i class="fas fa-award"></i> SKS</th>
-                                    <th><i class="fas fa-clock"></i> Jam</th>
-                                    <th><i class="fas fa-sticky-note"></i> Keterangan</th>
-                                    <th><i class="fas fa-cogs"></i> Aksi</th>
-                                </tr>
-
-                                <?php
-                                try {
-                                    $query = "SELECT * FROM matakuliah";
-                                    $stmt = $pdo->prepare($query);
-                                    $stmt->execute();
-                                    while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                        ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($data['id']) ?></td>
-                                            <td><?= htmlspecialchars($data['kode_matkul']) ?></td>
-                                            <td><?= htmlspecialchars($data['nama_matkul']) ?></td>
-                                            <td><?= htmlspecialchars($data['semester']) ?></td>
-                                            <td><?= htmlspecialchars($data['jenis_matkul']) ?></td>
-                                            <td><?= htmlspecialchars($data['sks']) ?></td>
-                                            <td><?= htmlspecialchars($data['jam']) ?></td>
-                                            <td><?= htmlspecialchars($data['keterangan']) ?></td>
-                                            <td>
-                                                <a href="index.php?p=matakuliah&aksi=edit&id=<?= htmlspecialchars($data['id']) ?>" 
-                                                   class="btn btn-success btn-sm">
-                                                   <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <a href="proses_matkul.php?proses=delete&id=<?= htmlspecialchars($data['id']) ?>" 
-                                                   class="btn btn-danger btn-sm"
-                                                   onclick="return confirm('Yakin mau dihapus?')">
-                                                   <i class="fas fa-trash"></i> Delete
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    }
-                                } catch(Exception $e) {
-                                    echo "Error: " . $e->getMessage();
-                                }
-                                ?>
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Matakuliah</h1>
+        </div>
+        <div class="row">
+            <div class="col-3 mb-3">
+                <a href="index.php?p=matkul&aksi=input" class="btn btn-primary"><i class="bi bi-person-plus"></i> Tambah Matakuliah</a>
             </div>
-        </section>
+            <div class="table-responsive small">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>No</th>
+                        <th>ID</th>
+                        <th>Kode Matakuliah</th>
+                        <th>Nama Matakuliah</th>
+                        <th>Semester</th>
+                        <th>Jenis Matakuliah</th>
+                        <th>SKS</th>
+                        <th>JAM</th>
+                        <th>Keterangan</th>
+                        <th>Aksi</th>
+                    </tr>
+                    <?php
+                    try {
+                        $query = $pdo->query("SELECT * FROM matakuliah");
+                        $no = 1;
+                        while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                            <tr>
+                                <td><?= $no++ ?></td>
+                                <td><?= $data['id'] ?></td>
+                                <td><?= $data['kode_matakuliah'] ?></td>
+                                <td><?= $data['nama_matakuliah'] ?></td>
+                                <td><?= $data['semester'] ?></td>
+                                <td><?= $data['jenis_matakuliah'] ?></td>
+                                <td><?= $data['sks'] ?></td>
+                                <td><?= $data['jam'] ?></td>
+                                <td><?= $data['keterangan'] ?></td>
+                                <td>
+                                    <a href="index.php?p=matkul&aksi=edit&id=<?= $data['id'] ?>" class="btn btn-success"><i class="bi bi-pencil"></i> Edit</a>
+                                    <a href="proses_matakuliah.php?proses=delete&id=<?= $data['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin mau dihapus?')"><i class="bi bi-trash"></i> Delete</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    } catch (PDOException $e) {
+                        echo "Error: " . $e->getMessage();
+                    }
+                    ?>
+                </table>
+            </div>
+        </div>
         <?php
         break;
 
     case 'input':
         ?>
-        <!-- Content Header -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                   
-                </div>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Input Mata Kuliah</h1>
+        </div>
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <form action="proses_matakuliah.php?proses=insert" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Kode Mata Kuliah</label>
+                        <input type="text" class="form-control" name="kode_matkul" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nama Mata Kuliah</label>
+                        <input type="text" class="form-control" name="nama_matkul" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Semester</label>
+                        <input type="number" class="form-control" name="semester" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jenis Mata Kuliah</label>
+                        <select class="form-select" name="jenis_matkul" required>
+                            <option value="">Pilih Jenis Mata Kuliah</option>
+                            <option value="teori">Teori</option>
+                            <option value="praktek">Praktek</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">SKS</label>
+                        <input type="number" class="form-control" name="sks" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jam</label>
+                        <input type="number" class="form-control" name="jam" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan</label>
+                        <textarea class="form-control" rows="3" name="keterangan" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                        <button type="reset" class="btn btn-warning" name="reset">Reset</button>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <!-- Main content -->
-        <section class="content">
-        <div class="row">
-                <div class="col-6 mx-auto">
-                    <div class="card">
-                        <div class="card-header">
-                        <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-user-plus"></i> Tambah Matakuliah</h3>
-                        </div>
-                    <div class="card-body">
-                        <form action="proses_matkul.php?proses=insert" method="post">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-code"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="kode_matkul" placeholder="Kode Matakuliah">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-book"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="nama_matkul" placeholder="Nama Matakuliah">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="semester" placeholder="Semester">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-list-alt"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="jenis_matkul" placeholder="Jenis Matakuliah">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
-                                </div>
-                                <input type="number" class="form-control" name="sks" placeholder="SKS">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="jam" placeholder="Jam">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-                                </div>
-                                <textarea class="form-control" rows="3" name="keterangan" placeholder="Keterangan"></textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-                                <button type="reset" class="btn btn-warning" name="reset">Reset</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
         <?php
         break;
 
     case 'edit':
-        $id = $_GET['id'];
         try {
-            $query = "SELECT * FROM matakuliah WHERE id = :id";
-            $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $data_matakuliah = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if (!$data_matakuliah) {
-                echo "Data tidak ditemukan";
-                exit;
-            }
-        } catch (Exception $e) {
+            $stmt = $pdo->prepare("SELECT * FROM matakuliah WHERE id = :id");
+            $stmt->execute(['id' => $_GET['id']]);
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
+            die();
         }
         ?>
-        <!-- Content Header -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0"><i class="fas fa-edit"></i> Edit Matakuliah</h1>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Edit Mata Kuliah</h1>
+        </div>
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <form action="proses_matakuliah.php?proses=edit" method="post">
+                    <input type="hidden" name="id" value="<?= $data['id'] ?>">
+                    <div class="mb-3">
+                        <label class="form-label">Kode Mata Kuliah</label>
+                        <input type="text" class="form-control" name="kode_matkul" value="<?= $data['kode_matakuliah'] ?>" required>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nama Mata Kuliah</label>
+                        <input type="text" class="form-control" name="nama_matkul" value="<?= $data['nama_matakuliah'] ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Semester</label>
+                        <input type="number" class="form-control" name="semester" value="<?= $data['semester'] ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jenis Mata Kuliah</label>
+                        <select class="form-select" name="jenis_matkul" required>
+                            <option value="teori" <?= $data['jenis_matakuliah'] == 'teori' ? 'selected' : '' ?>>Teori</option>
+                            <option value="praktek" <?= $data['jenis_matakuliah'] == 'praktek' ? 'selected' : '' ?>>Praktek</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">SKS</label>
+                        <input type="number" class="form-control" name="sks" value="<?= $data['sks'] ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jam</label>
+                        <input type="number" class="form-control" name="jam" value="<?= $data['jam'] ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan</label>
+                        <textarea class="form-control" rows="3" name="keterangan" required><?= $data['keterangan'] ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success" name="submit">Update</button>
+                        <button type="reset" class="btn btn-warning" name="reset">Reset</button>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-warning">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-pen"></i> Form Edit Matakuliah</h3>
-                    </div>
-                    <div class="card-body">
-                        <form action="proses_matkul.php?proses=edit" method="post">
-                            <input type="hidden" class="form-control" name="id" value="<?= htmlspecialchars($data_matakuliah['id']) ?>">
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-code"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="kode_matkul" 
-                                       value="<?= htmlspecialchars($data_matakuliah['kode_matkul']) ?>" placeholder="Kode Matakuliah">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-book"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="nama_matkul" 
-                                       value="<?= htmlspecialchars($data_matakuliah['nama_matkul']) ?>" placeholder="Nama Matakuliah">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="semester" 
-                                       value="<?= htmlspecialchars($data_matakuliah['semester']) ?>" placeholder="Semester">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-list-alt"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="jenis_matkul" 
-                                       value="<?= htmlspecialchars($data_matakuliah['jenis_matkul']) ?>" placeholder="Jenis Matakuliah">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
-                                </div>
-                                <input type="number" class="form-control" name="sks" 
-                                       value="<?= htmlspecialchars($data_matakuliah['sks']) ?>" placeholder="SKS">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="jam" 
-                                       value="<?= htmlspecialchars($data_matakuliah['jam']) ?>" placeholder="Jam">
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-                                </div>
-                                <textarea class="form-control" rows="3" name="keterangan" placeholder="Keterangan"><?= htmlspecialchars($data_matakuliah['keterangan']) ?></textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-warning" name="submit">Update</button>
-                                <button type="reset" class="btn btn-default" name="reset">Reset</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
         <?php
         break;
 }
