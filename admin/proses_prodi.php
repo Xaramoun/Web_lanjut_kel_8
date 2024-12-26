@@ -7,7 +7,7 @@ try {
             $nama_prodi = $_POST['nama_prodi'];
             $jenjang_std = $_POST['jenjang_std']; 
 
-            $sql = $db->prepare("INSERT INTO prodi (nama_prodi, jenjang_std) VALUES (:nama_prodi, :jenjang_std)");
+            $sql = $pdo->prepare("INSERT INTO prodi (nama_prodi, jenjang_std) VALUES (:nama_prodi, :jenjang_std)");
             $sql->bindParam(':nama_prodi', $nama_prodi);
             $sql->bindParam(':jenjang_std', $jenjang_std);
 
@@ -23,7 +23,7 @@ try {
             $id = $_POST['id'];
             $nama_prodi = $_POST['nama_prodi'];
             $jenjang_std = $_POST['jenjang_std']; 
-            $sql = $db->prepare("UPDATE prodi SET nama_prodi = :nama_prodi, jenjang_std = :jenjang_std WHERE id = :id");
+            $sql = $pdo->prepare("UPDATE prodi SET nama_prodi = :nama_prodi, jenjang_std = :jenjang_std WHERE id = :id");
             $sql->bindParam(':nama_prodi', $nama_prodi);
             $sql->bindParam(':jenjang_std', $jenjang_std); 
             $sql->bindParam(':id', $id, PDO::PARAM_INT);
@@ -38,19 +38,19 @@ try {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
             try {
-                $db->beginTransaction();
-                $sql_prodi = $db->prepare("DELETE FROM prodi WHERE id = :id");
+                $pdo->beginTransaction();
+                $sql_prodi = $pdo->prepare("DELETE FROM prodi WHERE id = :id");
                 $sql_prodi->bindParam(':id', $id, PDO::PARAM_INT);
 
                 if ($sql_prodi->execute()) {
-                    $db->commit();
+                    $pdo->commit();
                     header('Location: index.php?p=prodi'); 
                 } else {
-                    $db->rollBack();
+                    $pdo->rollBack();
                     echo "Error: Gagal menghapus data prodi.";
                 }
             } catch (PDOException $e) {
-                $db->rollBack(); 
+                $pdo->rollBack(); 
                 echo "Error: " . $e->getMessage(); 
             }
         }
