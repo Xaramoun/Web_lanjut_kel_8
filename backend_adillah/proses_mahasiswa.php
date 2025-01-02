@@ -8,7 +8,7 @@ if (isset($_GET['proses'])) {
     // INSERT Data
     if ($proses == 'insert') {
         try {
-            $stmt = $db->prepare("INSERT INTO mahasiswa 
+            $stmt = $pdo->prepare("INSERT INTO mahasiswa 
                                   (nim, nama_mhs, tgl_lahir, jekel, email, notelp, alamat, prodi_id) 
                                   VALUES (:nim, :nama, :tgl_lahir, :jekel, :email, :notelp, :alamat, :prodi_id)");
             $stmt->execute([
@@ -30,7 +30,7 @@ if (isset($_GET['proses'])) {
     // EDIT Data
     if ($proses == 'edit') {
         try {
-            $stmt = $db->prepare("UPDATE mahasiswa SET 
+            $stmt = $pdo->prepare("UPDATE mahasiswa SET 
                                     nama_mhs = :nama,
                                     tgl_lahir = :tgl_lahir,
                                     jekel = :jekel,
@@ -59,7 +59,7 @@ if (isset($_GET['proses'])) {
     if ($proses == 'delete') {
         if (isset($_GET['nim'])) {
             try {
-                $stmt = $db->prepare("DELETE FROM mahasiswa WHERE nim = :nim");
+                $stmt = $pdo->prepare("DELETE FROM mahasiswa WHERE nim = :nim");
                 $stmt->execute([':nim' => $_GET['nim']]);
                 echo "<script>alert('Data berhasil dihapus!'); window.location='index.php?p=mhs';</script>";
             } catch (PDOException $e) {
