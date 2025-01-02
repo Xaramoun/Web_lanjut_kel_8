@@ -6,7 +6,7 @@ $proses = $_GET['proses'];
 switch ($proses) {
     case 'insert':
         try {
-            $stmt = $db->prepare("INSERT INTO level (nama_level, keterangan) VALUES (?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO level (nama_level, keterangan) VALUES (?, ?)");
             $stmt->execute([$_POST['nama_level'], $_POST['keterangan']]);
             
             header("Location: index.php?p=level&aksi=list");
@@ -17,7 +17,7 @@ switch ($proses) {
 
     case 'edit':
         try {
-            $stmt = $db->prepare("UPDATE level SET nama_level = ?, keterangan = ? WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE level SET nama_level = ?, keterangan = ? WHERE id = ?");
             $stmt->execute([$_POST['nama_level'], $_POST['keterangan'], $_POST['id']]);
             
             header("Location: index.php?p=level&aksi=list");
@@ -28,7 +28,7 @@ switch ($proses) {
 
     case 'delete':
         try {
-            $stmt = $db->prepare("DELETE FROM level WHERE id = ?");
+            $stmt = $pdo->prepare("DELETE FROM level WHERE id = ?");
             $stmt->execute([$_GET['id']]);
             
             header("Location: index.php?p=level&aksi=list");
