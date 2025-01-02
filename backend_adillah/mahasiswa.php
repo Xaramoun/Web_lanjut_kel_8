@@ -25,7 +25,7 @@ switch ($aksi) {
                     </tr>
                     <?php
                     include 'koneksi.php';
-                    $stmt = $db->query("SELECT mahasiswa.*, prodi.nama_prodi FROM mahasiswa INNER JOIN prodi ON mahasiswa.prodi_id = prodi.id");
+                    $stmt = $pdo->query("SELECT mahasiswa.*, prodi.nama_prodi FROM mahasiswa INNER JOIN prodi ON mahasiswa.prodi_id = prodi.id");
                     $no = 1;
                     while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         ?>
@@ -75,7 +75,7 @@ switch ($aksi) {
                             <option value="" selected>--pilihan prodi--</option>
                             <?php
                             include 'koneksi.php';
-                            $stmt = $db->query("SELECT * FROM prodi");
+                            $stmt = $pdo->query("SELECT * FROM prodi");
                             while ($data_prodi = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 echo "<option value='".$data_prodi['id']."'>".$data_prodi['nama_prodi']."</option>";
                             }
@@ -110,7 +110,7 @@ switch ($aksi) {
 
     case 'edit':
         include 'koneksi.php';
-        $stmt = $db->prepare("SELECT * FROM mahasiswa WHERE nim = :nim");
+        $stmt = $pdo->prepare("SELECT * FROM mahasiswa WHERE nim = :nim");
         $stmt->execute(['nim' => $_GET['nim']]);
         $data_mhs = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -138,7 +138,7 @@ switch ($aksi) {
                         <select name="prodi_id" class="form-select" required>
                             <option value="" disabled>--pilihan prodi--</option>
                             <?php
-                            $stmt_prodi = $db->query("SELECT * FROM prodi");
+                            $stmt_prodi = $pdo->query("SELECT * FROM prodi");
                             while ($data_prodi = $stmt_prodi->fetch(PDO::FETCH_ASSOC)) {
                                 $selected = ($data_prodi['id'] == $data_mhs['prodi_id']) ? 'selected' : '';
                                 echo "<option value='".$data_prodi['id']."' $selected>".$data_prodi['nama_prodi']."</option>";
