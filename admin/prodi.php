@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query("SELECT * FROM prodi");
+                        $query = $pdo->query("SELECT * FROM prodi");
                         $no = 1;
                         while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
                         ?>
@@ -100,7 +100,7 @@
             break;
 
         case 'edit':
-            $stmt = $db->prepare("SELECT * FROM prodi WHERE id = :id");
+            $stmt = $pdo->prepare("SELECT * FROM prodi WHERE id = :id");
             $stmt->bindParam(':id', $_GET['id']);
             $stmt->execute();
             $data_prodi = $stmt->fetch(PDO::FETCH_ASSOC);
