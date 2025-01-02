@@ -1,62 +1,40 @@
 <?php
 include 'koneksi.php';
 
-if ($_GET['proses'] == 'insert') {
-    try {
-        $sql = "INSERT INTO matakuliah (kode_matakuliah, nama_matakuliah, semester, jenis_matakuliah, sks, jam, keterangan) 
-                VALUES (:kode_matkul, :nama_matkul, :semester, :jenis_matkul, :sks, :jam, :keterangan)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':kode_matkul' => $_POST['kode_matkul'],
-            ':nama_matkul' => $_POST['nama_matkul'],
-            ':semester' => $_POST['semester'],
-            ':jenis_matkul' => $_POST['jenis_matkul'],
-            ':sks' => $_POST['sks'],
-            ':jam' => $_POST['jam'],
-            ':keterangan' => $_POST['keterangan'],
-        ]);
-        echo "<script>window.location='index.php?p=matkul'</script>";
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
+$proses = $_GET['proses'];
 
-if ($_GET['proses'] == 'edit') {
-    try {
-        $sql = "UPDATE matakuliah SET 
-                kode_matakuliah = :kode_matkul,
-                nama_matakuliah = :nama_matkul,
-                semester = :semester,
-                jenis_matakuliah = :jenis_matkul,
-                sks = :sks,
-                jam = :jam,
-                keterangan = :keterangan
-                WHERE id = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':kode_matkul' => $_POST['kode_matkul'],
-            ':nama_matkul' => $_POST['nama_matkul'],
-            ':semester' => $_POST['semester'],
-            ':jenis_matkul' => $_POST['jenis_matkul'],
-            ':sks' => $_POST['sks'],
-            ':jam' => $_POST['jam'],
-            ':keterangan' => $_POST['keterangan'],
-            ':id' => $_POST['id'],
-        ]);
-        echo "<script>window.location='index.php?p=matkul'</script>";
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
+switch ($proses) {
+    case 'insert':
+        try {
+            $stmt = $pdo->prepare("INSERT INTO level (nama_level, keterangan) VALUES (?, ?)");
+            $stmt->execute([$_POST['nama_level'], $_POST['keterangan']]);
+            
+            header("Location: index.php?p=level&aksi=list");
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        break;
 
-if ($_GET['proses'] == 'delete') {
-    try {
-        $sql = "DELETE FROM matakuliah WHERE id = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id' => $_GET['id']]);
-        header('location:index.php?p=matkul');
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
+    case 'edit':
+        try {
+            $stmt = $pdo->prepare("UPDATE level SET nama_level = ?, keterangan = ? WHERE id = ?");
+            $stmt->execute([$_POST['nama_level'], $_POST['keterangan'], $_POST['id']]);
+            
+            header("Location: index.php?p=level&aksi=list");
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        break;
+
+    case 'delete':
+        try {
+            $stmt = $pdo->prepare("DELETE FROM level WHERE id = ?");
+            $stmt->execute([$_GET['id']]);
+            
+            header("Location: index.php?p=level&aksi=list");
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        break;
 }
 ?>
