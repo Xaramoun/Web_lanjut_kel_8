@@ -39,7 +39,7 @@ switch($aksi) {
                         </thead>
                     <tbody>
                     <?php
-                        $stmt = $dbh->query("SELECT * FROM kategori");
+                        $stmt = $pdo->query("SELECT * FROM kategori");
                         $no = 1;
                         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     ?>
@@ -88,7 +88,7 @@ switch($aksi) {
 <?php
     break;
     case 'edit':
-        $stmt = $dbh->prepare("SELECT * FROM kategori WHERE id = :id");
+        $stmt = $pdo->prepare("SELECT * FROM kategori WHERE id = :id");
         $stmt->execute(['id' => $_GET['id']]);
         $data_kategori = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
