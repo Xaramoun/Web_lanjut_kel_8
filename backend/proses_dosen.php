@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 if ($_GET['proses'] == 'insert') {
     if (isset($_POST['submit'])) {
         try {
-            $stmt = $dbh->prepare("INSERT INTO dosen (nik, nama_dosen, email, prodi_id, notelp, alamat) 
+            $stmt = $pdo->prepare("INSERT INTO dosen (nik, nama_dosen, email, prodi_id, notelp, alamat) 
                                  VALUES (:nik, :nama_dosen, :email, :prodi_id, :notelp, :alamat)");
             
             $stmt->execute([
@@ -29,7 +29,7 @@ if ($_GET['proses'] == 'insert') {
 if ($_GET['proses'] == 'edit') {
     if (isset($_POST['submit'])) {
         try {
-            $stmt = $dbh->prepare("UPDATE dosen 
+            $stmt = $pdo->prepare("UPDATE dosen 
                                  SET nik = :nik,
                                      nama_dosen = :nama_dosen,
                                      email = :email,
@@ -60,7 +60,7 @@ if ($_GET['proses'] == 'edit') {
 
 if ($_GET['proses'] == 'delete') {
     try {
-        $stmt = $dbh->prepare("DELETE FROM dosen WHERE id = :id");
+        $stmt = $pdo->prepare("DELETE FROM dosen WHERE id = :id");
         $stmt->execute([':id' => $_GET['id']]);
         
         header('location:index.php?p=dosen');
